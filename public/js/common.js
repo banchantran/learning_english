@@ -219,7 +219,7 @@ System.showSuggestion = function (e) {
     });
 }
 
-System.checkResult = function() {
+System.checkResult = function () {
     let formLearning = $('.form-learning'),
         pointResult = $('.point-result'),
         statusResult = $('.status-result'),
@@ -228,11 +228,11 @@ System.checkResult = function() {
     let totalItems = formLearning.find('.root-row').length,
         totalCorrectAnswer = 0;
 
-    formLearning.find('input.input-learning').each(function(i, item) {
+    formLearning.find('input.input-learning').each(function (i, item) {
         let correctAnswer = $(item).next('.text-suggest').html();
 
         if ($(item).val() === correctAnswer) {
-            totalCorrectAnswer ++;
+            totalCorrectAnswer++;
             $(item).removeClass('highlight');
         } else {
             $(item).addClass('highlight');
@@ -241,14 +241,25 @@ System.checkResult = function() {
 
     $rate = totalCorrectAnswer / totalItems;
     switch (true) {
-        case $rate === 1    : statusResult.html('Excellent'); $('#startConfetti').click(); break;
-        case $rate >= 0.9   : statusResult.html('Very good'); break;
-        case $rate >= 0.8   : statusResult.html('Good'); break;
-        case $rate >= 0.6   : statusResult.html('Try again'); break;
-        case $rate < 0.6    : statusResult.html('Bad T.T'); break;
+        case $rate === 1    :
+            statusResult.html('Excellent');
+            $('#startConfetti').click();
+            break;
+        case $rate >= 0.9   :
+            statusResult.html('Very good');
+            break;
+        case $rate >= 0.8   :
+            statusResult.html('Good');
+            break;
+        case $rate >= 0.6   :
+            statusResult.html('Try again');
+            break;
+        case $rate < 0.6    :
+            statusResult.html('Bad T.T');
+            break;
     }
 
-    setTimeout(function() {
+    setTimeout(function () {
         $('#stopConfetti').click();
     }, 5000);
 
@@ -270,6 +281,31 @@ System.setBookmark = function (e) {
             }
 
             $(e).toggleClass('checked');
+        },
+        error: function () {
+            alert('Oops! hihi ^^');
+        }
+    })
+}
+
+System.markCompleted = function (e) {
+    let url = $(e).attr('data-url');
+
+    $.ajax({
+        url: url,
+        type: 'get',
+        dataType: 'json',
+        success: function (obj) {
+            if (obj.success === false) {
+                window.location.reload();
+                return;
+            }
+
+            if (obj.data.was_completed) {
+                $(e).find('img.mark-complete').show();
+            } else {
+                $(e).find('img.mark-complete').hide();
+            }
         },
         error: function () {
             alert('Oops! hihi ^^');

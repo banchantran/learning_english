@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Requests\LessonRequest;
 use App\Models\Category;
+use App\Models\CompletedLesson;
 use App\Models\Item;
 use App\Models\Lesson;
 use Illuminate\Http\Request;
@@ -26,13 +27,17 @@ class LessonController extends Controller
     public function index($categoryId)
     {
         $lessons = Lesson::with(['items'])->where('del_flag', 0)->orderBy('id')->get();
+        $completedLessons = CompletedLesson::all()->pluck(['lesson_id'])->toArray();
         $category = Category::find($categoryId);
-
+        
         if (empty($category)) {
             return redirect()->route('category.index');
         }
 
-        return view('lesson.index', ['lessons' => $lessons, 'category' => $category]);
+        return view('lesson.index', [
+            'lessons' => $lessons,
+            'category' => $category,
+            'completedLessons' => $completedLessons]);
     }
 
     public function store($categoryId, LessonRequest $request)

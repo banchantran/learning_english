@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Bookmark extends Model
 {
-    protected $table = 'bookmark';
+    protected $table = 'bookmarks';
     public $timestamps = false;
 
     /**

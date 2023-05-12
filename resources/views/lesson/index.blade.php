@@ -11,15 +11,9 @@
 @section('content')
     <h3 class="category-title">{{$category->name}} <small>- {{count($lessons)}} {{Str::plural('lesson', count($lessons))}}</small></h3>
     <div class="row row-cols-auto list-lessons">
-        {{--        <div class="col">--}}
-        {{--            <div class="item done">--}}
-        {{--                <span class="title">Lesson 1</span>--}}
-        {{--                <small class="total-items">10</small>--}}
-        {{--            </div>--}}
-        {{--        </div>--}}
         @foreach($lessons as $lesson)
             <div class="col">
-                <div class="item">
+                <div class="item {{in_array($lesson->id, $completedLessons) ? 'done' : ''}}">
                     <div class="actions">
                         <span><a href="{{url(route('learning.show', ['lessonId' => $lesson->id]))}}"><img src="{{url('img/learn.png')}}" alt="Learn" title="Learn"></a></span>
                         <span><img src="{{url('img/edit.png')}}" alt="Edit" title="Edit"

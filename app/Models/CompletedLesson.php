@@ -4,17 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class CompletedLesson extends Model
 {
-    protected $table = 'categories';
+    protected $table = 'completed_lessons';
     public $timestamps = false;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var string[]
      */
     protected $fillable = [
-        'name', 'del_flag',
+        'id', 'lesson_id', 'user_id',
     ];
 
     /**

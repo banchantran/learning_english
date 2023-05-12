@@ -31,6 +31,7 @@ Route::prefix('category/{categoryId}/lesson')->name('lesson.')->group(function()
 
 Route::prefix('learning')->name('learning.')->group(function() {
     Route::get('/lesson/{lessonId}', [\App\Http\Controllers\LearningController::class, 'show'])->name('show');
+    Route::get('/lesson/{lessonId}/markCompleted', [\App\Http\Controllers\LearningController::class, 'markCompleted'])->name('mark_completed');
 });
 
 Route::prefix('bookmark')->name('bookmark.')->group(function() {

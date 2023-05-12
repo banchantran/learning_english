@@ -39,7 +39,7 @@
                         </p>
                     </button>
 
-                    <button type="button" class="btn btn-outline-success">
+                    <button type="button" class="btn btn-outline-success btn-reload">
                         <p class="d-flex align-items-center">
                             <img src="{{url('img/reload.png')}}" alt="reload" width="15px" class="mr-10">
                             <span>Reload</span>
@@ -54,9 +54,13 @@
                                 <span>Check result</span>
                             </p>
                         </button>
-                        <button type="button" class="btn btn-outline-success">
+                        <button type="button" class="btn btn-outline-success"
+                                data-url="{{url(route('learning.mark_completed', ['lessonId' => $lesson->id]))}}"
+                                onclick="System.markCompleted(this)">
                             <p class="d-flex align-items-center">
-                                <img src="{{url('img/complete_icon.png')}}" alt="reload" width="15px" class="mr-10">
+                                <img src="{{url('img/complete_icon.png')}}"
+                                     alt="reload" width="15px"
+                                     class="mark-complete mr-10 {{$wasCompleted ? '' : 'hidden'}}">
                                 <span>Mark completed</span>
                             </p>
                         </button>
@@ -102,15 +106,15 @@
                                     </audio>
                                 </div>
                                 <div class="action col-6 d-flex align-items-center">
+                                    <img class="play-icon {{!empty($item['audio_path']) ? '' : 'no-file'}} w-100"
+                                         src="{{url('img/play.png')}}" alt="audio"
+                                         onclick="System.playAudio(this)">
+                                </div>
+                                <div class="action col-6 d-flex align-items-center">
                                     <img class="bookmark-icon {{in_array($item['id'], $bookmarkItemIds) ? 'checked' : ''}} w-100"
                                          src="{{url('img/bookmark.png')}}" alt="bookmark"
                                          data-url="{{url(route('bookmark.store', ['itemId' => $item['id']]))}}"
                                          onclick="System.setBookmark(this)">
-                                </div>
-                                <div class="action col-6 d-flex align-items-center">
-                                    <img class="play-icon {{!empty($item['audio_path']) ? '' : 'no-file'}} w-100"
-                                         src="{{url('img/play.png')}}" alt="audio"
-                                         onclick="System.playAudio(this)">
                                 </div>
                                 <p class="text-suggest">&nbsp;</p>
                             </div>
