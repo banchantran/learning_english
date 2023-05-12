@@ -10,7 +10,7 @@
 </div>
 <hr>
 <div class="form-group form-lesson root-form">
-    @if (!empty($items))
+    @if (!empty($items) && is_object($items))
         @foreach($items as $item)
             <div class="row root-row">
                 <input type="hidden" name="item_id[]" value="{{$item->id}}">

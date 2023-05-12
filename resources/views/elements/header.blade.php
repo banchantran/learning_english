@@ -24,6 +24,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/">Category</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Bookmark</a>
+                </li>
                 {{--<li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Category

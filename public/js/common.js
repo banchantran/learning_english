@@ -8,7 +8,7 @@ System.hideLoading = function () {
     $('#loading').hide();
 }
 
-System.removeRow = function(e) {
+System.removeRow = function (e) {
     if ($(e).closest('.root-form').find('.root-row').length === 1) {
         return;
     }
@@ -16,13 +16,13 @@ System.removeRow = function(e) {
     $(e).closest('.root-row').remove();
 }
 
-System.uploadAudio = function(e) {
+System.uploadAudio = function (e) {
     let inputFile = $(e).closest('.upload-audio').find('input[type="file"]');
 
     inputFile.click();
 }
 
-System.setAudioName = function(e) {
+System.setAudioName = function (e) {
     let inputFile = $(e),
         audioFile = $(e).closest('.root-row').find('audio'),
         fileName = inputFile.val().match(/[^\\/]*$/)[0];
@@ -33,11 +33,11 @@ System.setAudioName = function(e) {
     inputFile.closest('.upload-audio').find('span').html(fileName);
 }
 
-System.playAudio = function(e) {
+System.playAudio = function (e) {
     let fileAudio = $(e).closest('.root-row').find('audio');
 
     // stop other audio
-    $('audio').each(function(){
+    $('audio').each(function () {
         this.pause(); // Stop playing
         this.currentTime = 0; // Reset time
     });
@@ -47,7 +47,7 @@ System.playAudio = function(e) {
     fileAudio[0].play();
 }
 
-System.addMoreRow = function(e) {
+System.addMoreRow = function (e) {
     let form = $(e).closest('form'),
         rootForm = form.find('.root-form'),
         rootRow = form.find('.root-row:first-child').clone();
@@ -77,8 +77,8 @@ System.showEditModal = function (modalId, e) {
             System.hideLoading();
 
             if (obj.success === true) {
-                $.each(obj.data, function(field, value) {
-                    modal.find('input[name="'+ field +'"]').val(value);
+                $.each(obj.data, function (field, value) {
+                    modal.find('input[name="' + field + '"]').val(value);
                 });
 
                 modal.modal();
@@ -136,14 +136,14 @@ System.showModal = function (modalId, e) {
     modal.modal();
 }
 
-System.resetModal = function(modalId) {
+System.resetModal = function (modalId) {
     let modal = $(modalId);
 
     modal.find('.alert-danger').hide();
     modal.find('.list-errors').empty();
     modal.find('input, select').val('');
     modal.find('audio').attr('src', '');
-    modal.find('[data-text-default]').each(function(i, item) {
+    modal.find('[data-text-default]').each(function (i, item) {
         $(item).html($(item).attr('data-text-default'));
     });
 }
@@ -199,6 +199,80 @@ System.deleteConfirm = function (e) {
             if (obj.success === true) {
                 window.location.reload();
             }
+        }
+    })
+}
+
+System.showSuggestion = function (e) {
+    $('.form-learning').find('.text-suggest').each(function (i, item) {
+        if ($(item).css('visibility') === 'hidden') {
+            $(item).css({visibility: "visible"});
+
+            $(e).find('.close-eye').hide();
+            $(e).find('.open-eye').show();
+        } else {
+            $(item).css({visibility: "hidden"});
+
+            $(e).find('.close-eye').show();
+            $(e).find('.open-eye').hide();
+        }
+    });
+}
+
+System.checkResult = function() {
+    let formLearning = $('.form-learning'),
+        pointResult = $('.point-result'),
+        statusResult = $('.status-result'),
+        textResult = $('.text-result');
+
+    let totalItems = formLearning.find('.root-row').length,
+        totalCorrectAnswer = 0;
+
+    formLearning.find('input.input-learning').each(function(i, item) {
+        let correctAnswer = $(item).next('.text-suggest').html();
+
+        if ($(item).val() === correctAnswer) {
+            totalCorrectAnswer ++;
+            $(item).removeClass('highlight');
+        } else {
+            $(item).addClass('highlight');
+        }
+    });
+
+    $rate = totalCorrectAnswer / totalItems;
+    switch (true) {
+        case $rate === 1    : statusResult.html('Excellent'); $('#startConfetti').click(); break;
+        case $rate >= 0.9   : statusResult.html('Very good'); break;
+        case $rate >= 0.8   : statusResult.html('Good'); break;
+        case $rate >= 0.6   : statusResult.html('Try again'); break;
+        case $rate < 0.6    : statusResult.html('Bad T.T'); break;
+    }
+
+    setTimeout(function() {
+        $('#stopConfetti').click();
+    }, 5000);
+
+    pointResult.html(totalCorrectAnswer + '/' + totalItems);
+    textResult.show();
+}
+
+System.setBookmark = function (e) {
+    let url = $(e).attr('data-url');
+
+    $.ajax({
+        url: url,
+        type: 'get',
+        dataType: 'json',
+        success: function (obj) {
+            if (obj.success === false) {
+                window.location.reload();
+                return;
+            }
+
+            $(e).toggleClass('checked');
+        },
+        error: function () {
+            alert('Oops! hihi ^^');
         }
     })
 }
