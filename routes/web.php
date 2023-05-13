@@ -36,6 +36,7 @@ Route::prefix('learning')->name('learning.')->group(function() {
 });
 
 Route::prefix('bookmark')->name('bookmark.')->group(function() {
-    Route::get('/list', [\App\Http\Controllers\BookmarkController::class, 'getList'])->name('list');
+    Route::get('/learn', [\App\Http\Controllers\BookmarkController::class, 'learn'])->name('learn');
+    Route::get('/reload', [\App\Http\Controllers\BookmarkController::class, 'reload'])->name('reload');
     Route::get('/store/{itemId}', [\App\Http\Controllers\BookmarkController::class, 'store'])->name('store');
 });

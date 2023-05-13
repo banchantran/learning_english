@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bookmark;
+use App\Models\Item;
+use App\Models\Lesson;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 
 class BookmarkController extends Controller
 {
+    const MAX_ITEM = 10;
+
     /**
      * Create a new controller instance.
      *
@@ -17,21 +21,42 @@ class BookmarkController extends Controller
     {
     }
 
-    public function getList()
+    public function learn()
+    {
+        $bookmarkItemIds = Bookmark::select(['item_id'])->get()->pluck('item_id')->toArray();
+        $items = Item::whereIn('id', $bookmarkItemIds)->get();
+
+        $items = $this->randomActive($items->toArray(), 'random', self::MAX_ITEM);
+
+        return view('bookmark.show', [
+            'items' => $items,
+            'bookmarkItemIds' => $bookmarkItemIds,
+        ]);
+    }
+
+    public function reload()
     {
         $responseObj = ['success' => false, 'data' => []];
 
+        $displayType = request()->displayType;
+
         try {
-            $itemIds = Bookmark::select(['id'])->get()->pluck('id');
+            $bookmarkItemIds = Bookmark::select(['item_id'])->get()->pluck('item_id')->toArray();
+
+            $items = Item::whereIn('id', $bookmarkItemIds)->get();
+
+            $items = $this->randomActive($items->toArray(), $displayType, self::MAX_ITEM);
 
             $responseObj['success'] = true;
-            $responseObj['data'] = $itemIds;
+            $responseObj['data'] = view('learning._form', [
+                'items' => $items,
+                'bookmarkItemIds' => $bookmarkItemIds
+            ])->render();
 
             return response()->json($responseObj);
 
         } catch (\Exception $e) {
             Log::error($e->getMessage());
-
             $responseObj['message'] = $e->getMessage();
         }
 

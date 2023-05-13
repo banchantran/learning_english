@@ -553,3 +553,12 @@ footer {
 .cursor-pointer {
     cursor: pointer;
 }
+
+.text-result .status-result {
+    font-size: smaller;
+    color: #c00;
+}
+
+.text-small {
+    font-size: 12px;
+}

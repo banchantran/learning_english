@@ -51,45 +51,6 @@ class LearningController extends Controller
         ]);
     }
 
-    /**
-     * @param $items
-     * @param string $displayType random | text_source | text_destination
-     * @return mixed
-     */
-    private function randomActive($items, $displayType = 'random')
-    {
-        $hiddenField = 'text_source';
-        $showField = 'text_destination';
-
-        if (count($items) > 1) {
-            $activeItemIds = array_rand($items, floor(count($items) / 2));
-            !is_array($activeItemIds) || count($items) == 1 ? $activeItemIds = [$activeItemIds] : null;
-        } else {
-            $activeItemIds = [0];
-        }
-
-        foreach ($items as $index => $item) {
-            if (count($items) == 1) {
-                $items[$index]['field_to_learn'] = [$hiddenField, $showField][array_rand([$hiddenField, $showField], 1)];
-
-                break;
-            }
-            if ($displayType == 'random') {
-                $items[$index]['field_to_learn'] = $hiddenField;
-
-                if (!in_array($index, $activeItemIds)) continue;
-
-                $items[$index]['field_to_learn'] = $showField;
-            } else {
-                $items[$index]['field_to_learn'] = $displayType;
-            }
-        }
-
-        shuffle($items);
-
-        return $items;
-    }
-
     public function markCompleted($lessonId)
     {
         $responseObj = ['success' => false, 'data' => ['was_completed' => false]];
@@ -124,6 +85,7 @@ class LearningController extends Controller
 
         return response()->json($responseObj);
     }
+
     public function reload($lessonId)
     {
         $responseObj = ['success' => false, 'data' => []];

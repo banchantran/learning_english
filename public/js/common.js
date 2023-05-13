@@ -246,20 +246,20 @@ System.checkResult = function () {
     $rate = totalCorrectAnswer / totalItems;
     switch (true) {
         case $rate === 1    :
-            statusResult.html('Excellent');
+            statusResult.html('- Excellent ❀❀❀');
             $('#startConfetti').click();
             break;
         case $rate >= 0.9   :
-            statusResult.html('Very good');
+            statusResult.html('- Very good');
             break;
         case $rate >= 0.8   :
-            statusResult.html('Good');
+            statusResult.html('- Good');
             break;
         case $rate >= 0.6   :
-            statusResult.html('Try again');
+            statusResult.html('- Try again （＾ω＾）');
             break;
         case $rate < 0.6    :
-            statusResult.html('Bad T.T');
+            statusResult.html('- Bad ┌( ಠ_ಠ )┘');
             break;
     }
 
@@ -323,6 +323,8 @@ System.reloadFormLearning = function (e) {
         displayType = $('select.display-type').val();
 
     System.showLoading();
+
+    $('.text-result').hide();
 
     $.ajax({
         url: url,

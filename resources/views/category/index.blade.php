@@ -14,7 +14,7 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th scope="col">ID</th>
+            <th scope="col">#</th>
             <th scope="col">Name</th>
             <th scope="col">Numbers of lessons</th>
             <th scope="col">Current lesson</th>
@@ -22,10 +22,13 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($data as $item)
+        @foreach($data as $index => $item)
             <tr>
-                <th scope="row">{{$item->id}}</th>
-                <td>{{$item->name}}</td>
+                <th scope="row">{{$index + 1}}</th>
+                <td><a class="btn-action text-success" href="javascript:void(0)"
+                       data-url="{{url(route('category.show', ['id' => $item->id]))}}"
+                       onclick="System.showEditModal('#createCategory', this)">{{$item->name}}</a>
+                </td>
                 <td>
                     <a class="" href="{{url(route('lesson.index', ['categoryId' => $item->id]))}}">
                         {{$item->lessons->count()}} {{Str::plural('lesson', $item->lessons->count())}}
@@ -33,11 +36,11 @@
                 </td>
                 <td>0</td>
                 <td align="right">
-                    <a class="btn-action" href="javascript:void(0)"
+                    <a class="btn-action text-primary" href="javascript:void(0)"
                        data-url="{{url(route('category.show', ['id' => $item->id]))}}"
                        onclick="System.showEditModal('#createCategory', this)">Edit</a>
 
-                    <a class="btn-action ml10" href="javascript:void(0)"
+                    <a class="btn-action ml10 text-danger" href="javascript:void(0)"
                        data-url="{{route('category.delete', ['id' => $item->id])}}"
                        onclick="System.showModal('#deleteConfirm', this)">Delete</a>
                 </td>
