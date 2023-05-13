@@ -12,13 +12,21 @@
     <div class="ajax-form">
         <div class="row mb-20">
             <div class="col-4 d-flex align-items-center">
-                <span class="direction">&laquo; Prevous lesson</span>
+                @if (!empty($previousLesson))
+                    <a href="{{url(route('learning.show', ['lessonId' => $previousLesson->id]))}}" class="text-info">
+                        <span class="direction">&laquo; Previous lesson</span>
+                    </a>
+                @endif
             </div>
             <div class="col-4 text-center">
                 <h2 class="lesson-name">{{$lesson->name}}</h2>
             </div>
             <div class="col-4 text-end  d-flex align-items-center justify-content-end">
-                <span class="direction">Next lesson &raquo;</span>
+                @if (!empty($nextLesson))
+                    <a href="{{url(route('learning.show', ['lessonId' => $nextLesson->id]))}}" class="text-info">
+                        <span class="direction">Next lesson &raquo;</span>
+                    </a>
+                @endif
             </div>
         </div>
         <hr class="default">
@@ -26,10 +34,10 @@
         <div class="group-actions mb20">
             <div class="row">
                 <div class="col-6">
-                    <select class="form-select show-type d-inline-block" name="show_type" aria-label="Default select">
-                        <option value="source">Show source</option>
-                        <option value="destination">Show destination</option>
+                    <select class="form-select display-type d-inline-block" name="show_type" aria-label="Default select" onchange="$('.btn-reload').click()">
                         <option value="random">Random</option>
+                        <option value="text_source">Learning source</option>
+                        <option value="text_destination">Learning destination</option>
                     </select>
                     <button type="button" class="btn btn-outline-success" onclick="System.showSuggestion(this)">
                         <p class="d-flex align-items-center">
@@ -39,7 +47,10 @@
                         </p>
                     </button>
 
-                    <button type="button" class="btn btn-outline-success btn-reload">
+                    <button type="button"
+                            class="btn btn-outline-success btn-reload"
+                            data-url="{{url(route('learning.reload', ['lessonId' => $lesson->id]))}}"
+                            onclick="System.reloadFormLearning(this)">
                         <p class="d-flex align-items-center">
                             <img src="{{url('img/reload.png')}}" alt="reload" width="15px" class="mr-10">
                             <span>Reload</span>
@@ -74,53 +85,7 @@
         <div class="clearfix"></div>
         <div class="border border-dark p-4 rounded-3">
             <div class="form-group form-lesson form-learning">
-                @foreach($items as $item)
-                    <input type="hidden" name="id" value="{{$item['id']}}">
-                    <div class="row root-row">
-                        <div class="col-11">
-                            <div class="row">
-                                <div class="col-6">
-                                    @if ($item['field_to_learn'] == 'text_source')
-                                        <input class="input-learning" type="text" placeholder="" name="source[]" value="">
-                                        <p class="text-suggest">{{$item['text_source']}}</p>
-                                    @else
-                                        <p class="plain-text">{{$item['text_source']}}</p>
-                                    @endif
-                                </div>
-                                <div class="col-6">
-                                    @if ($item['field_to_learn'] == 'text_destination')
-                                        <input class="input-learning" type="text" placeholder="" name="destination[]" value="">
-                                        <p class="text-suggest">{{$item['text_destination']}}</p>
-                                    @else
-                                        <p class="plain-text">{{$item['text_destination']}}</p>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-1 d-flex">
-                            <div class="row">
-                                <div class="play-audio hidden">
-                                    <audio controls>
-                                        <source src="{{!empty($item['audio_path']) ? url($item['audio_path']) : ''}}" type="audio/mpeg">
-                                        Your browser does not support the audio element.
-                                    </audio>
-                                </div>
-                                <div class="action col-6 d-flex align-items-center">
-                                    <img class="play-icon {{!empty($item['audio_path']) ? '' : 'no-file'}} w-100"
-                                         src="{{url('img/play.png')}}" alt="audio"
-                                         onclick="System.playAudio(this)">
-                                </div>
-                                <div class="action col-6 d-flex align-items-center">
-                                    <img class="bookmark-icon {{in_array($item['id'], $bookmarkItemIds) ? 'checked' : ''}} w-100"
-                                         src="{{url('img/bookmark.png')}}" alt="bookmark"
-                                         data-url="{{url(route('bookmark.store', ['itemId' => $item['id']]))}}"
-                                         onclick="System.setBookmark(this)">
-                                </div>
-                                <p class="text-suggest">&nbsp;</p>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
+                @include('learning._form')
             </div>
         </div>
     </div>

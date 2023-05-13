@@ -8,7 +8,7 @@
 
 #loading {
     display: none;
-    position: absolute;
+    position: fixed;
     width: 100%;
     height: 100%;
     background: rgba(255, 255, 255, 0.7);
@@ -84,7 +84,7 @@
 }
 
 .list-lessons .item.done {
-    background-color: #9ae3ed;
+    background-color: #00e0ff;
 }
 
 .list-lessons .item:not(.done):hover {
@@ -97,6 +97,10 @@
 }
 
 .list-lessons .item.done .total-items {
+    color: #fff;
+}
+
+.list-lessons .item.done span.title {
     color: #fff;
 }
 
@@ -113,6 +117,7 @@
 
 .list-lessons .item.done img.done {
     display: block;
+    opacity: 0.6;
 }
 
 .add-more > span {
@@ -275,7 +280,7 @@ input.highlight {
     border-radius: 5px;
 }
 
-.group-actions select.show-type {
+.group-actions select.display-type {
     width: auto;
     outline: none;
     border-color: #198754;
@@ -290,3 +295,4 @@ input.highlight {
     transform: rotate(0deg);
     transition: 0.5s;
 }
+

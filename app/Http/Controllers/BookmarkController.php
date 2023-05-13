@@ -19,7 +19,7 @@ class BookmarkController extends Controller
 
     public function getList()
     {
-        $responseObj = ['success' => false, 'data' => ''];
+        $responseObj = ['success' => false, 'data' => []];
 
         try {
             $itemIds = Bookmark::select(['id'])->get()->pluck('id');
@@ -34,6 +34,8 @@ class BookmarkController extends Controller
 
             $responseObj['message'] = $e->getMessage();
         }
+
+        request()->session()->flash('error', config('messages.SYSTEM_ERROR'));
 
         return response()->json($responseObj);
     }
@@ -65,6 +67,8 @@ class BookmarkController extends Controller
 
             $responseObj['message'] = $e->getMessage();
         }
+
+        request()->session()->flash('error', config('messages.SYSTEM_ERROR'));
 
         return response()->json($responseObj);
     }

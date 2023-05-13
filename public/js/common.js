@@ -2,10 +2,14 @@ let System = {};
 
 System.showLoading = function () {
     $('#loading').show();
+
+    $('body').css('overflow', 'hidden');
 }
 
 System.hideLoading = function () {
     $('#loading').hide();
+
+    $('body').css('overflow', 'unset');
 }
 
 System.removeRow = function (e) {
@@ -308,6 +312,32 @@ System.markCompleted = function (e) {
             }
         },
         error: function () {
+            alert('Oops! hihi ^^');
+        }
+    })
+}
+
+System.reloadFormLearning = function (e) {
+    let url = $(e).attr('data-url'),
+        formLearning = $('.form-learning'),
+        displayType = $('select.display-type').val();
+
+    System.showLoading();
+
+    $.ajax({
+        url: url,
+        type: 'get',
+        data: {'displayType': displayType},
+        dataType: 'json',
+        success: function (obj) {
+            if (obj.success) {
+                formLearning.html(obj.data);
+            }
+
+            System.hideLoading();
+        },
+        error: function () {
+            System.hideLoading();
             alert('Oops! hihi ^^');
         }
     })

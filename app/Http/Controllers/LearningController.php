@@ -22,9 +22,22 @@ class LearningController extends Controller
 
     public function show($lessonId)
     {
-        $lesson = Lesson::with(['items'])->where('id', $lessonId)->first();
+        $lesson = Lesson::with(['items'])->where('id', $lessonId)->where('del_flag', 0)->first();
         $bookmarkItemIds = Bookmark::select(['item_id'])->get()->pluck('item_id')->toArray();
         $wasCompleted = !empty(CompletedLesson::where('lesson_id', $lessonId)->first());
+
+        if (empty($lesson)) {
+            return response()->view('errors.404', [], 404);
+        }
+
+        $previousLesson = Lesson::where('id', '<', $lesson->id)
+            ->where('category_id', $lesson->category_id)
+            ->where('del_flag', 0)
+            ->orderBy('id', 'desc')->first();
+        $nextLesson = Lesson::where('id', '>', $lesson->id)
+            ->where('category_id', $lesson->category_id)
+            ->where('del_flag', 0)
+            ->orderBy('id', 'asc')->first();
 
         $items = $this->randomActive($lesson->items->toArray());
 
@@ -32,16 +45,18 @@ class LearningController extends Controller
             'lesson' => $lesson,
             'items' => $items,
             'wasCompleted' => $wasCompleted,
-            'bookmarkItemIds' => $bookmarkItemIds
+            'bookmarkItemIds' => $bookmarkItemIds,
+            'previousLesson' => $previousLesson,
+            'nextLesson' => $nextLesson,
         ]);
     }
 
     /**
      * @param $items
-     * @param string $type random | text_source | text_destination
+     * @param string $displayType random | text_source | text_destination
      * @return mixed
      */
-    private function randomActive($items, $type = 'random')
+    private function randomActive($items, $displayType = 'random')
     {
         $hiddenField = 'text_source';
         $showField = 'text_destination';
@@ -59,13 +74,15 @@ class LearningController extends Controller
 
                 break;
             }
-            if ($type == 'random') {
+            if ($displayType == 'random') {
                 $items[$index]['field_to_learn'] = $hiddenField;
 
                 if (!in_array($index, $activeItemIds)) continue;
-            }
 
-            $items[$index]['field_to_learn'] = $showField;
+                $items[$index]['field_to_learn'] = $showField;
+            } else {
+                $items[$index]['field_to_learn'] = $displayType;
+            }
         }
 
         shuffle($items);
@@ -100,6 +117,41 @@ class LearningController extends Controller
 
         } catch (\Exception $e) {
             Log::error($e->getMessage());
+            $responseObj['message'] = $e->getMessage();
+        }
+
+        request()->session()->flash('error', config('messages.SYSTEM_ERROR'));
+
+        return response()->json($responseObj);
+    }
+    public function reload($lessonId)
+    {
+        $responseObj = ['success' => false, 'data' => []];
+
+        if (empty($lessonId)) {
+            return response()->json($responseObj);
+        }
+
+        $displayType = request()->displayType;
+
+        try {
+            $lesson = Lesson::with(['items'])->where('id', $lessonId)->first();
+            $bookmarkItemIds = Bookmark::select(['item_id'])->get()->pluck('item_id')->toArray();
+
+            $items = $this->randomActive($lesson->items->toArray(), $displayType);
+
+            $responseObj['success'] = true;
+            $responseObj['data'] = view('learning._form', [
+                'lesson' => $lesson,
+                'items' => $items,
+                'bookmarkItemIds' => $bookmarkItemIds
+            ])->render();
+
+            return response()->json($responseObj);
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            $responseObj['message'] = $e->getMessage();
         }
 
         request()->session()->flash('error', config('messages.SYSTEM_ERROR'));

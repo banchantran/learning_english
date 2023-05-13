@@ -29,7 +29,7 @@ class LessonController extends Controller
         $lessons = Lesson::with(['items'])->where('del_flag', 0)->orderBy('id')->get();
         $completedLessons = CompletedLesson::all()->pluck(['lesson_id'])->toArray();
         $category = Category::find($categoryId);
-        
+
         if (empty($category)) {
             return redirect()->route('category.index');
         }
@@ -42,7 +42,7 @@ class LessonController extends Controller
 
     public function store($categoryId, LessonRequest $request)
     {
-        $responseObj = ['success' => false, 'data' => ''];
+        $responseObj = ['success' => false, 'data' => []];
 
         DB::beginTransaction();
 
@@ -88,6 +88,8 @@ class LessonController extends Controller
             $responseObj['message'] = $e->getMessage();
         }
 
+        request()->session()->flash('error', config('messages.SYSTEM_ERROR'));
+
         return response()->json($responseObj);
     }
 
@@ -113,7 +115,7 @@ class LessonController extends Controller
      */
     public function update($categoryId, LessonRequest $request)
     {
-        $responseObj = ['success' => false, 'data' => ''];
+        $responseObj = ['success' => false, 'data' => []];
 
         $lessonId = $request->id;
 
@@ -194,12 +196,14 @@ class LessonController extends Controller
             $responseObj['message'] = $e->getMessage();
         }
 
+        request()->session()->flash('error', config('messages.SYSTEM_ERROR'));
+
         return response()->json($responseObj);
     }
 
     public function delete($categoryId, $lessonId)
     {
-        $responseObj = ['success' => false, 'data' => ''];
+        $responseObj = ['success' => false, 'data' => []];
 
         if (empty($lessonId) || empty($categoryId)) {
             return response()->json($responseObj);
@@ -221,6 +225,7 @@ class LessonController extends Controller
 
         } catch (\Exception $e) {
             Log::error($e->getMessage());
+            $responseObj['message'] = $e->getMessage();
             DB::rollBack();
         }
 
@@ -231,7 +236,7 @@ class LessonController extends Controller
 
     public function show($categoryId, $lessonId)
     {
-        $responseObj = ['success' => false, 'data' => ''];
+        $responseObj = ['success' => false, 'data' => []];
 
         if (empty($lessonId) || empty($categoryId)) {
             return response()->json($responseObj);
@@ -252,7 +257,10 @@ class LessonController extends Controller
 
         } catch (\Exception $e) {
             Log::error($e->getMessage());
+            $responseObj['message'] = $e->getMessage();
         }
+
+        request()->session()->flash('error', config('messages.SYSTEM_ERROR'));
 
         return response()->json($responseObj);
     }
