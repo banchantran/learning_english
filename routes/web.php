@@ -40,3 +40,7 @@ Route::prefix('bookmark')->name('bookmark.')->group(function() {
     Route::get('/reload', [\App\Http\Controllers\BookmarkController::class, 'reload'])->name('reload');
     Route::get('/store/{itemId}', [\App\Http\Controllers\BookmarkController::class, 'store'])->name('store');
 });
+
+Route::prefix('search')->name('search.')->group(function() {
+    Route::get('/result', [\App\Http\Controllers\SearchController::class, 'result'])->name('result');
+});

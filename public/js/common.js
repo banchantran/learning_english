@@ -2,14 +2,10 @@ let System = {};
 
 System.showLoading = function () {
     $('#loading').show();
-
-    $('body').css('overflow', 'hidden');
 }
 
 System.hideLoading = function () {
     $('#loading').hide();
-
-    $('body').css('overflow', 'unset');
 }
 
 System.removeRow = function (e) {
