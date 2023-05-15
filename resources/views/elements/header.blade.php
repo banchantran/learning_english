@@ -1,14 +1,3 @@
-{{--<div class="container-fluid">--}}
-{{--    <div class="row">--}}
-{{--        <div class="col-1">--}}
-{{--            <a href="{{url('/')}}"><img src="{{url('img/speak_english.png')}}" alt="logo" width="100px" class="logo-top"></a>--}}
-{{--        </div>--}}
-{{--        <div class="col-2 offset-9 group-search">--}}
-{{--            <input type="text" class="form-control" placeholder="Keyword..." aria-label="" aria-describedby="basic-addon1">--}}
-{{--            <button class="btn btn-info">Search</button>--}}
-{{--        </div>--}}
-{{--    </div>--}}
-{{--</div>--}}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="#"><img src="{{url('img/speak_english.png')}}" alt="logo" width="100px" class="logo-top"></a>
@@ -45,6 +34,15 @@
                     </button>
                 </form>
             @endif
+            <a href="{{url(route('user.login'))}}" class="link-dark ml20 text-decoration-underline">Login</a>
+            <span class="ml10">or</span>
+            <a href="{{url(route('user.register'))}}" class="link-dark ml10 text-decoration-underline">Register</a>
+{{--            <button class="btn btn-outline-success btn-search my-2 my-sm-0 d-flex align-items-center ml10" type="button">--}}
+{{--                Login--}}
+{{--            </button>--}}
+{{--            <button class="btn btn-outline-success btn-search my-2 my-sm-0 d-flex align-items-center ml10" type="button">--}}
+{{--                Register--}}
+{{--            </button>--}}
         </div>
     </div>
 </nav>

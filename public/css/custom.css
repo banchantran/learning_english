@@ -371,3 +371,24 @@ mark{
     vertical-align: middle;
 }
 
+form.form-login {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px #ccc;
+    margin-top: 100px;
+}
+
+.btn-red {
+    background-color: #ec8d8d;
+    border-color: #ec8d8d;
+    color: #fff;
+}
+
+.form-login .title {
+    font-size: 25px;
+    font-weight: 700;
+    color: #333;
+    font-family: cursive;
+    margin: 10px 0 30px 0px;
+}

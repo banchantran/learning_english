@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\User;
 
-class HomeController extends Controller
+class UserController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -16,15 +16,18 @@ class HomeController extends Controller
     {
     }
 
-    public function index()
+    public function login()
     {
-        $data = Category::orderBy('id')->get();
-
-        return view('home.index', ['data' => $data]);
+        return view('user.login');
     }
 
-    public function delete($id)
+    public function logout()
     {
-        echo 1;die;
+        return view('user.login');
+    }
+
+    public function register()
+    {
+        return view('user.login');
     }
 }
