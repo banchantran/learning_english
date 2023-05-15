@@ -26,7 +26,15 @@ class LessonController extends Controller
 
     public function index($categoryId)
     {
-        $lessons = Lesson::with(['items'])->where('del_flag', 0)->orderBy('id')->get();
+        if (empty($categoryId)) {
+            return response()->view('errors.404', [], 404);
+        }
+
+        $lessons = Lesson::with(['items'])
+            ->where('category_id', $categoryId)
+            ->where('del_flag', 0)
+            ->orderBy('id')
+            ->get();
         $completedLessons = CompletedLesson::all()->pluck(['lesson_id'])->toArray();
         $category = Category::find($categoryId);
 
@@ -86,9 +94,9 @@ class LessonController extends Controller
 
             Log::error($e->getMessage());
             $responseObj['message'] = $e->getMessage();
-        }
 
-        request()->session()->flash('error', config('messages.SYSTEM_ERROR'));
+            request()->session()->flash('error', config('messages.SYSTEM_ERROR'));
+        }
 
         return response()->json($responseObj);
     }
@@ -194,9 +202,9 @@ class LessonController extends Controller
 
             Log::error($e->getMessage());
             $responseObj['message'] = $e->getMessage();
-        }
 
-        request()->session()->flash('error', config('messages.SYSTEM_ERROR'));
+            request()->session()->flash('error', config('messages.SYSTEM_ERROR'));
+        }
 
         return response()->json($responseObj);
     }
@@ -227,9 +235,9 @@ class LessonController extends Controller
             Log::error($e->getMessage());
             $responseObj['message'] = $e->getMessage();
             DB::rollBack();
-        }
 
-        request()->session()->flash('error', config('messages.SYSTEM_ERROR'));
+            request()->session()->flash('error', config('messages.SYSTEM_ERROR'));
+        }
 
         return response()->json($responseObj);
     }
@@ -258,9 +266,9 @@ class LessonController extends Controller
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             $responseObj['message'] = $e->getMessage();
-        }
 
-        request()->session()->flash('error', config('messages.SYSTEM_ERROR'));
+            request()->session()->flash('error', config('messages.SYSTEM_ERROR'));
+        }
 
         return response()->json($responseObj);
     }

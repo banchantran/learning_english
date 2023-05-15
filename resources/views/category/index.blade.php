@@ -9,7 +9,7 @@
 @endsection
 @section('content')
     <div class="d-flex justify-content-end mb15">
-        <button class="btn btn-danger" type="button" onclick="System.showModal('#createCategory', this)">Add</button>
+        <button class="btn btn-dark" type="button" onclick="System.showModal('#createCategory', this)">Add</button>
     </div>
     <table class="table table-striped">
         <thead>
@@ -25,18 +25,16 @@
         @foreach($data as $index => $item)
             <tr>
                 <th scope="row">{{$index + 1}}</th>
-                <td><a class="btn-action text-success" href="javascript:void(0)"
-                       data-url="{{url(route('category.show', ['id' => $item->id]))}}"
-                       onclick="System.showEditModal('#createCategory', this)">{{$item->name}}</a>
+                <td><span>{{$item->name}}</span>
                 </td>
                 <td>
-                    <a class="" href="{{url(route('lesson.index', ['categoryId' => $item->id]))}}">
+                    <a class="link-success" href="{{url(route('lesson.index', ['categoryId' => $item->id]))}}">
                         {{$item->lessons->count()}} {{Str::plural('lesson', $item->lessons->count())}}
                     </a>
                 </td>
                 <td>0</td>
                 <td align="right">
-                    <a class="btn-action text-primary" href="javascript:void(0)"
+                    <a class="btn-action" href="javascript:void(0)"
                        data-url="{{url(route('category.show', ['id' => $item->id]))}}"
                        onclick="System.showEditModal('#createCategory', this)">Edit</a>
 

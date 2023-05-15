@@ -556,3 +556,8 @@ footer {
 .text-small {
     font-size: 12px;
 }
+
+input.form-control:focus {
+    border-color: #ec8d8d;
+    box-shadow: none;
+}

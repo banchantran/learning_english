@@ -54,9 +54,9 @@ class CategoryController extends Controller
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             DB::rollBack();
-        }
 
-        request()->session()->flash('error', config('messages.SYSTEM_ERROR'));
+            request()->session()->flash('error', config('messages.SYSTEM_ERROR'));
+        }
 
         return response()->json($responseObj);
     }
@@ -102,9 +102,9 @@ class CategoryController extends Controller
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             $responseObj['message'] = $e->getMessage();
-        }
 
-        request()->session()->flash('error', config('messages.SYSTEM_ERROR'));
+            request()->session()->flash('error', config('messages.SYSTEM_ERROR'));
+        }
 
         return response()->json($responseObj);
     }

@@ -13,76 +13,77 @@
 
         <div class="row mt-4 mb-4">
             <div class="col-8 offset-2">
-                <form class="form-inline my-2 my-lg-0 d-flex group-search align-items-center justify-content-center">
+                <form method="get" action="{{url(route('search.result'))}}"
+                      class="form-inline my-2 my-lg-0 d-flex group-search align-items-center justify-content-center">
                     <div class="form-group w-75">
-                        <input type="password" class="form-control" id="inputPassword2" placeholder="Password">
+                        <input type="text" name="keyword" class="form-control keyword-search" placeholder="Keyword..." value="{{!empty($keyword) ? $keyword : ''}}">
                     </div>
-                    <button type="submit" class="btn btn-outline-success my-2 my-sm-0 ml10">Search</button>
+                    <button type="submit" class="btn btn-outline-success btn-search my-2 my-sm-0 ml10" onclick="System.showLoading()">
+                        <img src="{{url('img/search-icon.svg')}}" alt="search">
+                        Search
+                    </button>
                 </form>
             </div>
         </div>
         <div class="row mb-20">
-            <div class="col-lg-6">
-                <div class="records">Showing: <b>1-20</b> of <b>200</b> result</div>
+            <div class="col-12">
+                <div class="records">
+                    @include('elements.paging', ['paginator' => $data])
+                </div>
             </div>
         </div>
         <div class="list-result container">
-            <div class="row result-item">
-                <div class="col-6">
-                    <div class="learning-text">
-                        <p class="text-source">to need a lot of imagination</p>
-                        <p class="text-destination">cần nhiều sự tưởng tượng</p>
+            @if (count($data) > 0)
+                @foreach($data as $item)
+                    <div class="row result-item">
+                        <div class="col-6">
+                            <div class="learning-text">
+                                <p class="text-source">{{$item->text_source}}</p>
+                                <p class="text-destination">{{$item->text_destination}}</p>
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div class="category-lesson">
+                                <p class="link-category"><a href="{{url(route('lesson.index', ['categoryId' => $item->category_id]))}}" target="_blank">{{$item->category_name}}</a></p>
+                                <p class="link-lesson">{{$item->lesson_name}}</p>
+                            </div>
+                        </div>
+                        <div class="col-1 text-end">
+                            <img class="play-icon mr-10 {{!empty($item->audio_path) ? '' : 'no-file'}}" width="20px"
+                                 src="{{url('img/play.png')}}" alt="audio"
+                                 onclick="System.playAudio(this)">
+
+                            <img class="bookmark-icon {{in_array($item->id, $bookmarkItemIds) ? 'checked' : ''}}" width="20px"
+                                 src="{{url('img/bookmark.png')}}" alt="bookmark"
+                                 data-url="{{url(route('bookmark.store', ['itemId' => $item->id]))}}"
+                                 onclick="System.setBookmark(this)">
+                        </div>
                     </div>
+                @endforeach
+            @else
+                <div class="row result-item">
+                    <div class="col-12 text-center text-muted">Nothing to display!</div>
                 </div>
-                <div class="col-5">
-                    <div class="category-lesson">
-                        <p class="link-category">Vocabulary for IELTS</p>
-                        <p class="link-lesson">Lesson 1</p>
-                    </div>
-                </div>
-                <div class="col-1 text-end">
-                    <img src="{{url('img/play.png')}}" alt="play" width="20px" class="mr-10">
-                    <img src="{{url('img/bookmark.png')}}" alt="bookmark" width="20px">
-                </div>
-            </div>
-            <div class="row result-item">
-                <div class="col-6">
-                    <div class="learning-text">
-                        <p class="text-source">to need a lot of imagination</p>
-                        <p class="text-destination">cần nhiều sự tưởng tượng</p>
-                    </div>
-                </div>
-                <div class="col-5">
-                    <div class="category-lesson">
-                        <p class="link-category">Vocabulary for IELTS</p>
-                        <p class="link-lesson">Lesson 1</p>
-                    </div>
-                </div>
-                <div class="col-1 text-end">
-                    <img src="{{url('img/play.png')}}" alt="play" width="20px" class="mr-10">
-                    <img src="{{url('img/bookmark.png')}}" alt="bookmark" width="20px">
-                </div>
+            @endif
+        </div>
+
+        <div class="row mt-5 mb-4">
+            <div class="col-12 d-flex justify-content-center">
+                {{ $data->appends(['keyword' => $keyword])->links() }}
             </div>
         </div>
-        <nav class="d-flex justify-content-center pb-3 mt-5">
-            <ul class="pagination pagination-base pagination-boxed pagination-square mb-0">
-                <li class="page-item">
-                    <a class="page-link no-border" href="#">
-                        <span aria-hidden="true">«</span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                </li>
-                <li class="page-item active"><a class="page-link no-border" href="#">1</a></li>
-                <li class="page-item"><a class="page-link no-border" href="#">2</a></li>
-                <li class="page-item"><a class="page-link no-border" href="#">3</a></li>
-                <li class="page-item"><a class="page-link no-border" href="#">4</a></li>
-                <li class="page-item">
-                    <a class="page-link no-border" href="#">
-                        <span aria-hidden="true">»</span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
     </div>
+@endsection
+@section('script')
+    @if (count($data) > 0)
+        <script type="application/javascript">
+            $(document).ready(function () {
+                let keyword = $('.keyword-search').val();
+
+                if ($.trim(keyword) !== '') {
+                    $(".list-result").mark(keyword);
+                }
+            })
+        </script>
+    @endif
 @endsection

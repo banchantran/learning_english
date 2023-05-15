@@ -21,5 +21,6 @@
     @include('elements.dialog')
 </div>
 @include('elements.footer')
+@yield('script')
 </body>
 </html>

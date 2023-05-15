@@ -36,10 +36,15 @@
                     </div>
                 </li>--}}
             </ul>
-            <form class="form-inline my-2 my-lg-0 group-search">
-                <input class="form-control mr-sm-2" type="search" placeholder="Keyword..." aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
+            @if (!$hideSearchBar)
+                <form class="form-inline my-2 my-lg-0 group-search" method="get" action="{{url(route('search.result'))}}">
+                    <input class="form-control mr-sm-2" name="keyword" type="search" placeholder="Keyword..." aria-label="Search">
+                    <button class="btn btn-outline-success btn-search my-2 my-sm-0 d-flex align-items-center" type="submit">
+                        <img src="{{url('img/search-icon.svg')}}" alt="search">
+                        Search
+                    </button>
+                </form>
+            @endif
         </div>
     </div>
 </nav>

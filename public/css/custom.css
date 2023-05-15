@@ -327,6 +327,7 @@ input.highlight {
     box-shadow: 0px 0px 5px #ccc;
     padding: 30px;
     border-radius: 10px;
+    margin-bottom: 20px;
 }
 
 .page-link {
@@ -350,3 +351,23 @@ mark{
     font-weight: bold;
     text-decoration: underline;
 }
+
+.btn-search {
+    border-color: #ec8d8d;
+    background-color: #ec8d8d;
+    color: #fff;
+    font-size: 15px;
+}
+
+.btn-search:hover {
+    background-color: #ec8d8d;
+    border-color: #ec8d8d;
+    box-shadow: 0px 0px 5px #ec8d8d;
+}
+
+.btn-search img {
+    width: 15px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
