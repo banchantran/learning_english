@@ -415,3 +415,8 @@ form.form-login {
     background: none;
     color: #c00;
 }
+
+.form-check-input:checked {
+    background-color: #ec8d8d;
+    border-color: #ec8d8d;
+}

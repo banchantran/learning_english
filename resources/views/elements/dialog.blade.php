@@ -134,6 +134,12 @@
                                aria-describedby="nameCategory"
                                placeholder="">
                     </div>
+                    <div class="form-check mt-3">
+                        <input class="form-check-input" name="is_public" type="checkbox" value="1" checked="checked" id="defaultCheck1">
+                        <label class="form-check-label" for="defaultCheck1">
+                            Public for everyone
+                        </label>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>

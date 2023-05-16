@@ -45,7 +45,7 @@
                         <div class="col-5">
                             <div class="category-lesson">
                                 <p class="link-category"><a href="{{url(route('lesson.index', ['categoryId' => $item->category_id]))}}" target="_blank">{{$item->category_name}}</a></p>
-                                <p class="link-lesson">{{$item->lesson_name}}</p>
+                                <p class="link-lesson"><a class="text-red-i" href="{{url(route('learning.show', ['lessonId' => $item->lesson_id]))}}">{{$item->lesson_name}}</a></p>
                             </div>
                         </div>
                         <div class="col-1 text-end">
@@ -53,10 +53,12 @@
                                  src="{{url('img/play.png')}}" alt="audio"
                                  onclick="System.playAudio(this)">
 
-                            <img class="bookmark-icon {{in_array($item->id, $bookmarkItemIds) ? 'checked' : ''}}" width="20px"
-                                 src="{{url('img/bookmark.png')}}" alt="bookmark"
-                                 data-url="{{url(route('bookmark.store', ['itemId' => $item->id]))}}"
-                                 onclick="System.setBookmark(this)">
+                            @auth
+                                <img class="bookmark-icon {{in_array($item->id, $bookmarkItemIds) ? 'checked' : ''}}" width="20px"
+                                     src="{{url('img/bookmark.png')}}" alt="bookmark"
+                                     data-url="{{url(route('bookmark.store', ['itemId' => $item->id]))}}"
+                                     onclick="System.setBookmark(this)">
+                            @endauth
                         </div>
                     </div>
                 @endforeach

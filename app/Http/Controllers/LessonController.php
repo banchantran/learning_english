@@ -9,6 +9,7 @@ use App\Models\CompletedLesson;
 use App\Models\Item;
 use App\Models\Lesson;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -35,7 +36,12 @@ class LessonController extends Controller
             ->where('del_flag', 0)
             ->orderBy('id')
             ->get();
-        $completedLessons = CompletedLesson::all()->pluck(['lesson_id'])->toArray();
+
+        $completedLessons = [];
+        if (Auth::check()) {
+            $completedLessons = CompletedLesson::where('user_id', Auth::user()->id)->get()->pluck(['lesson_id'])->toArray();
+        }
+
         $category = Category::find($categoryId);
 
         if (empty($category)) {

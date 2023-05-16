@@ -67,12 +67,14 @@ class CategoryController extends Controller
         if (!empty($request->id)) {
             $category = Category::find($request->id);
             $category->name = $request->name;
+            $category->is_public = $request->is_public;
 
             $category->save();
             request()->session()->flash('success', config('messages.UPDATE_SUCCESS'));
         } else {
             $category = Category::create([
                 'name' => $request->name,
+                'is_public' => $request->is_public,
             ]);
 
             $category->save();

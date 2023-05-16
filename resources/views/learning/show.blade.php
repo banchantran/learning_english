@@ -65,16 +65,19 @@
                                 <span>Check result</span>
                             </p>
                         </button>
-                        <button type="button" class="btn btn-outline-success"
-                                data-url="{{url(route('learning.mark_completed', ['lessonId' => $lesson->id]))}}"
-                                onclick="System.markCompleted(this)">
-                            <p class="d-flex align-items-center">
-                                <img src="{{url('img/complete_icon.png')}}"
-                                     alt="reload" width="15px"
-                                     class="mark-complete mr-10 {{$wasCompleted ? '' : 'hidden'}}">
-                                <span>Mark completed</span>
-                            </p>
-                        </button>
+
+                        @auth
+                            <button type="button" class="btn btn-outline-success"
+                                    data-url="{{url(route('learning.mark_completed', ['lessonId' => $lesson->id]))}}"
+                                    onclick="System.markCompleted(this)">
+                                <p class="d-flex align-items-center">
+                                    <img src="{{url('img/complete_icon.png')}}"
+                                         alt="reload" width="15px"
+                                         class="mark-complete mr-10 {{$wasCompleted ? '' : 'hidden'}}">
+                                    <span>Mark completed</span>
+                                </p>
+                            </button>
+                        @endauth
                     </div>
                 </div>
                 <div class="col-12">

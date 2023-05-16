@@ -16,14 +16,16 @@
                 <div class="item {{in_array($lesson->id, $completedLessons) ? 'done' : ''}}">
                     <div class="actions">
                         <span><a href="{{url(route('learning.show', ['lessonId' => $lesson->id]))}}"><img src="{{url('img/learn.png')}}" alt="Learn" title="Learn"></a></span>
-                        <span><img src="{{url('img/edit.png')}}" alt="Edit" title="Edit"
-                                   data-url="{{url(route('lesson.show', ['categoryId' => $category->id, 'lessonId' => $lesson->id]))}}"
-                                   onclick="System.showAjaxEditModal('#editLesson', this)">
+                        @auth
+                            <span><img src="{{url('img/edit.png')}}" alt="Edit" title="Edit"
+                                       data-url="{{url(route('lesson.show', ['categoryId' => $category->id, 'lessonId' => $lesson->id]))}}"
+                                       onclick="System.showAjaxEditModal('#editLesson', this)">
                         </span>
-                        <span><img src="{{url('img/trash-icon.png')}}" alt="Delete" title="Delete"
-                                   data-url="{{route('lesson.delete', ['categoryId' => $category->id, 'lessonId' => $lesson->id])}}"
-                                   onclick="System.showModal('#deleteConfirm', this)">
+                            <span><img src="{{url('img/trash-icon.png')}}" alt="Delete" title="Delete"
+                                       data-url="{{route('lesson.delete', ['categoryId' => $category->id, 'lessonId' => $lesson->id])}}"
+                                       onclick="System.showModal('#deleteConfirm', this)">
                         </span>
+                        @endauth
                     </div>
                     <img class="done" src="{{url('img/done.png')}}" alt="done">
                     <span class="title">{{$lesson->name}}</span>
@@ -31,8 +33,11 @@
                 </div>
             </div>
         @endforeach
-        <div class="col">
-            <div class="add-more" onclick="System.showModal('#createLesson', this)"><span class="line1"></span><span class="line2"></span></div>
-        </div>
+
+        @auth
+            <div class="col">
+                <div class="add-more" onclick="System.showModal('#createLesson', this)"><span class="line1"></span><span class="line2"></span></div>
+            </div>
+        @endauth
     </div>
 @endsection

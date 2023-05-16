@@ -34,12 +34,14 @@
                          src="{{url('img/play.png')}}" alt="audio"
                          onclick="System.playAudio(this)">
                 </div>
-                <div class="action col-6 d-flex align-items-center cursor-pointer">
-                    <img class="bookmark-icon {{in_array($item['id'], $bookmarkItemIds) ? 'checked' : ''}} w-100"
-                         src="{{url('img/bookmark.png')}}" alt="bookmark"
-                         data-url="{{url(route('bookmark.store', ['itemId' => $item['id']]))}}"
-                         onclick="System.setBookmark(this)">
-                </div>
+                @auth
+                    <div class="action col-6 d-flex align-items-center cursor-pointer">
+                        <img class="bookmark-icon {{in_array($item['id'], $bookmarkItemIds) ? 'checked' : ''}} w-100"
+                             src="{{url('img/bookmark.png')}}" alt="bookmark"
+                             data-url="{{url(route('bookmark.store', ['itemId' => $item['id']]))}}"
+                             onclick="System.setBookmark(this)">
+                    </div>
+                @endauth
                 <p class="text-suggest">&nbsp;</p>
             </div>
         </div>

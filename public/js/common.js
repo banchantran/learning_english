@@ -78,7 +78,13 @@ System.showEditModal = function (modalId, e) {
 
             if (obj.success === true) {
                 $.each(obj.data, function (field, value) {
-                    modal.find('input[name="' + field + '"]').val(value);
+                    modal.find('[name="' + field + '"]').each(function(i, item) {
+                        if ($(item).is(':checkbox')) {
+                            $(item).prop('checked', value);
+                        } else {
+                            $(item).val(value);
+                        }
+                    });
                 });
 
                 modal.modal();
@@ -141,7 +147,7 @@ System.resetModal = function (modalId) {
 
     modal.find('.alert-danger').hide();
     modal.find('.list-errors').empty();
-    modal.find('input, select').val('');
+    modal.find('input[type=text], select').val('');
     modal.find('audio').attr('src', '');
     modal.find('[data-text-default]').each(function (i, item) {
         $(item).html($(item).attr('data-text-default'));
