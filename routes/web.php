@@ -13,9 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('/', [\App\Http\Controllers\CategoryController::class, 'index'])->name('home');
-Route::get('/login', [\App\Http\Controllers\UserController::class, 'login'])->name('user.login');
+Route::get('/login', [\App\Http\Controllers\UserController::class, 'getLogin'])->name('user.getLogin');
+Route::post('/login', [\App\Http\Controllers\UserController::class, 'postLogin'])->name('user.postLogin');
 Route::get('/logout', [\App\Http\Controllers\UserController::class, 'logout'])->name('user.logout');
-Route::get('/register', [\App\Http\Controllers\UserController::class, 'register'])->name('user.register');
+Route::post('/register', [\App\Http\Controllers\UserController::class, 'postRegister'])->name('user.postRegister');
+Route::get('/register', [\App\Http\Controllers\UserController::class, 'getRegister'])->name('user.getRegister');
 
 Route::prefix('category')->name('category.')->group(function() {
     Route::get('/', [\App\Http\Controllers\CategoryController::class, 'index'])->name('index');

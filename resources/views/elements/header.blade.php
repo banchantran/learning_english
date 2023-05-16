@@ -34,9 +34,9 @@
                     </button>
                 </form>
             @endif
-            <a href="{{url(route('user.login'))}}" class="link-dark ml20 text-decoration-underline">Login</a>
+            <a href="{{url(route('user.getLogin'))}}" class="link-dark ml20 text-decoration-underline">Login</a>
             <span class="ml10">or</span>
-            <a href="{{url(route('user.register'))}}" class="link-dark ml10 text-decoration-underline">Register</a>
+            <a href="{{url(route('user.getRegister'))}}" class="link-dark ml10 text-decoration-underline">Register</a>
 {{--            <button class="btn btn-outline-success btn-search my-2 my-sm-0 d-flex align-items-center ml10" type="button">--}}
 {{--                Login--}}
 {{--            </button>--}}

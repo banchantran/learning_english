@@ -5,7 +5,16 @@
             <div class="col-4 offset-4">
                 <form class="form-login">
                     <h1 class="title mb-20 text-center">Login form</h1>
-
+                    @if (session()->has('success'))
+                        <div class="alert alert-success">
+                            <p>{{session('success')}}</p>
+                        </div>
+                    @endif
+                    @if (session()->has('error'))
+                        <div class="alert alert-danger">
+                            <p>{{session('error')}}</p>
+                        </div>
+                    @endif
                     <div class="form-group">
                         <input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Username">
                     </div>
@@ -14,13 +23,13 @@
                     </div>
                     <div class="form-check mt-2">
                         <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">Remember me</label>
+                        <label class="form-check-label f14" for="exampleCheck1">Remember me</label>
                     </div>
                     <div class="text-end">
                         <button type="submit" class="btn btn-red w-100 mt-4">Login</button>
                     </div>
                     <div class="text-center f14 mt-3">
-                        Not a member? <a href="#" class="text-success">Signup now</a>
+                        Not a member? <a href="{{url(route('user.getRegister'))}}" class="text-success">Signup now</a>
                     </div>
                 </form>
             </div>

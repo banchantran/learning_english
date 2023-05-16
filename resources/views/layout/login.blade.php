@@ -5,9 +5,13 @@
 </head>
 <body>
 <div class="wrapper-container">
-    @include('elements.flash-messages')
     @yield('content')
 </div>
+<div id="loading">
+    <img src="{{url('img/loading.gif')}}" alt="loading">
+</div>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="{{url('js/common.js?v=' . time())}}"></script>
 @yield('script')
 </body>
 </html>
