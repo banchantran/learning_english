@@ -17,14 +17,16 @@
                     <div class="actions">
                         <span><a href="{{url(route('learning.show', ['lessonId' => $lesson->id]))}}"><img src="{{url('img/learn.png')}}" alt="Learn" title="Learn"></a></span>
                         @auth
-                            <span><img src="{{url('img/edit.png')}}" alt="Edit" title="Edit"
-                                       data-url="{{url(route('lesson.show', ['categoryId' => $category->id, 'lessonId' => $lesson->id]))}}"
-                                       onclick="System.showAjaxEditModal('#editLesson', this)">
-                        </span>
-                            <span><img src="{{url('img/trash-icon.png')}}" alt="Delete" title="Delete"
-                                       data-url="{{route('lesson.delete', ['categoryId' => $category->id, 'lessonId' => $lesson->id])}}"
-                                       onclick="System.showModal('#deleteConfirm', this)">
-                        </span>
+                            @if (\Illuminate\Support\Facades\Auth::user()->id === $lesson->user_id)
+                                <span><img src="{{url('img/edit.png')}}" alt="Edit" title="Edit"
+                                           data-url="{{url(route('lesson.show', ['categoryId' => $category->id, 'lessonId' => $lesson->id]))}}"
+                                           onclick="System.showAjaxEditModal('#editLesson', this)">
+                                </span>
+                                <span><img src="{{url('img/trash-icon.png')}}" alt="Delete" title="Delete"
+                                           data-url="{{route('lesson.delete', ['categoryId' => $category->id, 'lessonId' => $lesson->id])}}"
+                                           onclick="System.showModal('#deleteConfirm', this)">
+                                </span>
+                            @endif
                         @endauth
                     </div>
                     <img class="done" src="{{url('img/done.png')}}" alt="done">

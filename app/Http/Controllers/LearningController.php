@@ -6,6 +6,7 @@ use App\Models\Bookmark;
 use App\Models\CompletedLesson;
 use App\Models\Item;
 use App\Models\Lesson;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -24,7 +25,12 @@ class LearningController extends Controller
     {
         $lesson = Lesson::with(['items'])->where('id', $lessonId)->where('del_flag', 0)->first();
         $bookmarkItemIds = Bookmark::select(['item_id'])->get()->pluck('item_id')->toArray();
-        $wasCompleted = !empty(CompletedLesson::where('lesson_id', $lessonId)->first());
+
+        $wasCompleted = false;
+        if (Auth::check()) {
+            $wasCompleted = !empty(CompletedLesson::where('lesson_id', $lessonId)
+                ->where('user_id', Auth::user()->id)->first());
+        }
 
         if (empty($lesson)) {
             return response()->view('errors.404', [], 404);
@@ -65,6 +71,7 @@ class LearningController extends Controller
             if (empty($lesson)) {
                 CompletedLesson::create([
                     'lesson_id' => $lessonId,
+                    'user_id' => Auth::user()->id,
                 ])->save();
 
                 $responseObj['data']['was_completed'] = true;

@@ -13,6 +13,13 @@
             <button class="btn btn-dark" type="button" onclick="System.showModal('#createCategory', this)">Add</button>
         </div>
     @endauth
+    <div class="row mb-20">
+        <div class="col-12">
+            <div class="records">
+                @include('elements.paging', ['paginator' => $data])
+            </div>
+        </div>
+    </div>
     <table class="table table-striped">
         <thead>
         <tr>
@@ -20,6 +27,7 @@
             <th scope="col">Name</th>
             <th scope="col">Numbers of lessons</th>
             <th scope="col">Public for everyone</th>
+            <th scope="col">Owner</th>
             @auth
                 <th scope="col"></th>
             @endauth
@@ -28,7 +36,7 @@
         <tbody>
         @foreach($data as $index => $item)
             <tr>
-                <th scope="row">{{$index + 1}}</th>
+                <th scope="row">{{ $index + 1 + (($data->currentPage() - 1) * $data->perPage()) }}</th>
                 <td><span>{{$item->name}}</span>
                 </td>
                 <td>
@@ -45,25 +53,37 @@
                         </svg>
                     @endif
                 </td>
+                <td>
+                    {{$item->user->username}}
+                </td>
                 @auth
-                    <td align="right">
-                        <a class="btn-action" href="javascript:void(0)"
-                           data-url="{{url(route('category.show', ['id' => $item->id]))}}"
-                           onclick="System.showEditModal('#createCategory', this)">Edit</a>
+                    @if (\Illuminate\Support\Facades\Auth::user()->id === $item->user_id)
+                        <td align="right">
+                            <a class="btn-action" href="javascript:void(0)"
+                               data-url="{{url(route('category.show', ['id' => $item->id]))}}"
+                               onclick="System.showEditModal('#createCategory', this)">Edit</a>
 
-                        <a class="btn-action ml10 text-danger" href="javascript:void(0)"
-                           data-url="{{route('category.delete', ['id' => $item->id])}}"
-                           onclick="System.showModal('#deleteConfirm', this)">Delete</a>
-                    </td>
+                            <a class="btn-action ml10 text-danger" href="javascript:void(0)"
+                               data-url="{{route('category.delete', ['id' => $item->id])}}"
+                               onclick="System.showModal('#deleteConfirm', this)">Delete</a>
+                        </td>
+                    @else
+                        <td></td>
+                    @endif
                 @endauth
             </tr>
         @endforeach
         @if (count($data) == 0)
             <tr>
-                <td colspan="5" align="center">No data</td>
+                <td colspan="@auth 6 @else 5 @endauth" align="center">No data</td>
             </tr>
         @endif
         </tbody>
     </table>
 
+    <div class="row mt-5 mb-4">
+        <div class="col-12 d-flex justify-content-center">
+            {{ $data->links() }}
+        </div>
+    </div>
 @endsection

@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Item;
 use App\Models\Lesson;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -23,7 +24,31 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $data = Category::where('del_flag', 0)->orderBy('id')->get();
+        if (Auth::check()) {
+            $publicData = Category::with(['user'])
+                ->where('del_flag', 0)
+                ->where('user_id', '!=', Auth::user()->id)
+                ->where('is_public', 1)
+                ->where('del_flag', 0)
+                ->orderBy('id');
+
+            $data = Category::with(['user'])
+                ->where('del_flag', 0)
+                ->where('user_id', Auth::user()->id)
+                ->orderBy('id')
+                ->union($publicData);
+
+        } else {
+            $data = Category::with(['user'])
+                ->where('is_public', 1)
+                ->where('del_flag', 0)
+                ->groupBy('id')
+                ->orderBy('user_id')
+                ->orderBy('id');
+        }
+
+
+        $data = $data->paginate(10);
 
         return view('category.index', ['data' => $data]);
     }
@@ -74,7 +99,8 @@ class CategoryController extends Controller
         } else {
             $category = Category::create([
                 'name' => $request->name,
-                'is_public' => $request->is_public,
+                'is_public' => $request->is_public ? 1 : 0,
+                'user_id' => Auth::user()->id,
             ]);
 
             $category->save();

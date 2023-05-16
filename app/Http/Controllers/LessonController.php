@@ -64,6 +64,7 @@ class LessonController extends Controller
             // save lesson
             $lesson = Lesson::create([
                 'category_id' => $categoryId,
+                'user_id' => Auth::user()->id,
                 'name' => $request->input('name')
             ]);
 

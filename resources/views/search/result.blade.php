@@ -36,17 +36,20 @@
             @if (count($data) > 0)
                 @foreach($data as $item)
                     <div class="row result-item">
-                        <div class="col-6">
+                        <div class="col-5 highlight-result">
                             <div class="learning-text">
                                 <p class="text-source">{{$item->text_source}}</p>
                                 <p class="text-destination">{{$item->text_destination}}</p>
                             </div>
                         </div>
-                        <div class="col-5">
+                        <div class="col-4 highlight-result">
                             <div class="category-lesson">
                                 <p class="link-category"><a href="{{url(route('lesson.index', ['categoryId' => $item->category_id]))}}" target="_blank">{{$item->category_name}}</a></p>
                                 <p class="link-lesson"><a class="text-red-i" href="{{url(route('learning.show', ['lessonId' => $item->lesson_id]))}}">{{$item->lesson_name}}</a></p>
                             </div>
+                        </div>
+                        <div class="col-2">
+                            <p>{{$item->username}}</p>
                         </div>
                         <div class="col-1 text-end">
                             <img class="play-icon mr-10 {{!empty($item->audio_path) ? '' : 'no-file'}}" width="20px"
@@ -83,7 +86,7 @@
                 let keyword = $('.keyword-search').val();
 
                 if ($.trim(keyword) !== '') {
-                    $(".list-result").mark(keyword);
+                    $(".highlight-result").mark(keyword);
                 }
             })
         </script>

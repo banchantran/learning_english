@@ -59,7 +59,7 @@ class UserController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect()->route('user.getLogin');
+        return redirect()->route('home');
     }
 
     public function getRegister()

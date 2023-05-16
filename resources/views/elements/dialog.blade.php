@@ -121,7 +121,7 @@
                 <h5 class="modal-title" id="exampleModalLongTitle">Such a wonderful category!</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="formCreateCategory" action="{{url(route('category.store'))}}">
+            <form id="formCreateCategory" action="{{url(route('category.store'))}}" method="post" onsubmit="return false;">
                 <input type="hidden" name="id" value="">
                 <div class="modal-body">
                     <div class="alert-danger hidden">

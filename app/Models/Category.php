@@ -14,7 +14,7 @@ class Category extends Model
      * @var string[]
      */
     protected $fillable = [
-        'name', 'is_public', 'del_flag',
+        'user_id', 'name', 'is_public', 'del_flag',
     ];
 
     /**
@@ -28,5 +28,10 @@ class Category extends Model
     public function lessons()
     {
         return $this->hasMany(Lesson::class)->where('del_flag', 0);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
