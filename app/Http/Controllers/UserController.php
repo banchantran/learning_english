@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SignupRequest;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
@@ -21,17 +23,43 @@ class UserController extends Controller
 
     public function getLogin()
     {
+        if (Auth::check()) {
+            return redirect()->route('home');
+        }
+
         return view('user.login');
     }
 
-    public function postLogin()
+    public function postLogin(LoginRequest $request)
     {
-        return view('user.login');
+        $credentials = $request->only([
+            'username',
+            'password',
+        ]);
+
+        $remember = $request->remember;
+
+        if (Auth::attempt($credentials, $remember)) {
+            $request->session()->regenerate();
+
+            return redirect()->route('home');
+        }
+
+        return back()->withErrors([
+            'username' => 'Incorrect username or password!',
+        ])->onlyInput('username');
+
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
-        return view('user.login');
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect()->route('user.getLogin');
     }
 
     public function getRegister()

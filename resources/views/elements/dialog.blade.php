@@ -65,7 +65,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" data-url="" onclick="System.submitForm(this)">
+                    <button type="button" class="btn btn-red" data-url="" onclick="System.submitForm(this)">
                         Save
                     </button>
                 </div>
@@ -102,7 +102,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" data-url="" onclick="System.submitForm(this)">
+                    <button type="button" class="btn btn-red" data-url="" onclick="System.submitForm(this)">
                         Save
                     </button>
                 </div>
@@ -137,7 +137,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" data-url="" onclick="System.submitForm(this)">
+                    <button type="button" class="btn btn-red" data-url="" onclick="System.submitForm(this)">
                         Save
                     </button>
                 </div>
@@ -160,7 +160,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-url="" onclick="System.deleteConfirm(this)">OK
+                <button type="button" class="btn btn-red" data-url="" onclick="System.deleteConfirm(this)">OK
                 </button>
             </div>
         </div>

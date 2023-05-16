@@ -16,14 +16,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{url(route('bookmark.learn'))}}">Bookmark</a>
                 </li>
-                {{--<li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Category
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">Lesson</a>
-                    </div>
-                </li>--}}
             </ul>
             @if (!$hideSearchBar)
                 <form class="form-inline my-2 my-lg-0 group-search" method="get" action="{{url(route('search.result'))}}">
@@ -34,15 +26,23 @@
                     </button>
                 </form>
             @endif
-            <a href="{{url(route('user.getLogin'))}}" class="link-dark ml20 text-decoration-underline">Login</a>
-            <span class="ml10">or</span>
-            <a href="{{url(route('user.getRegister'))}}" class="link-dark ml10 text-decoration-underline">Register</a>
-{{--            <button class="btn btn-outline-success btn-search my-2 my-sm-0 d-flex align-items-center ml10" type="button">--}}
-{{--                Login--}}
-{{--            </button>--}}
-{{--            <button class="btn btn-outline-success btn-search my-2 my-sm-0 d-flex align-items-center ml10" type="button">--}}
-{{--                Register--}}
-{{--            </button>--}}
+
+            @auth
+                <ul class="nav-bar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link text-pink dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{\Illuminate\Support\Facades\Auth::user()->username}}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-custom" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{url(route('user.logout'))}}">Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            @else
+                <a href="{{url(route('user.getLogin'))}}" class="link-dark ml20 text-decoration-underline">Login</a>
+                <span class="ml10">or</span>
+                <a href="{{url(route('user.getRegister'))}}" class="link-dark ml10 text-decoration-underline">Register</a>
+            @endauth
         </div>
     </div>
 </nav>

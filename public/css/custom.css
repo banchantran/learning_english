@@ -397,3 +397,21 @@ form.form-login {
     font-family: cursive;
     margin: 10px 0 30px 0px;
 }
+
+.text-pink {
+    color: #ec8d8d;
+}
+
+.text-pink:hover, .text-pink:focus, .text-pink:visited {
+    color: #c00;
+}
+
+.dropdown-menu.dropdown-menu-custom.show {
+    border: none;
+    box-shadow: 0px 0px 5px #ccc;
+}
+
+.dropdown-menu-custom .dropdown-item:focus, .dropdown-menu-custom .dropdown-item:hover {
+    background: none;
+    color: #c00;
+}
